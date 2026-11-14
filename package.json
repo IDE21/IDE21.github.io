@@ -1,0 +1,18 @@
+{
+  "name": "ide21-site",
+  "private": true,
+  "description": "Enad Alrougi's personal site (bilingual, light/dark).",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && npx --yes serve@14.2.4 dist"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.1.11",
+    "esbuild": "0.24.2",
+    "tailwindcss": "4.1.11"
+  }
+}
