@@ -1,7 +1,46 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { LazyMotion, domAnimation, m, useReducedMotion } from "motion/react";
 
 const S = window.SITE;
+
+// Moving background: rounded rects that drift slowly, echoing the three bars of the logo.
+// [x, y, width, height, filled, drift x, drift y, turn (deg), seconds]
+const RECTS = [
+  [80, 120, 220, 34, 1, 40, 30, 0, 18],
+  [80, 180, 150, 34, 1, 30, 30, 0, 18],
+  [80, 240, 220, 34, 1, 40, 30, 0, 18],
+  [1080, 90, 180, 180, 0, -50, 60, 25, 24],
+  [1180, 560, 260, 40, 1, -60, -40, 0, 20],
+  [220, 620, 120, 120, 0, 60, -50, -30, 26],
+  [640, 40, 90, 90, 1, 30, 70, 45, 22],
+  [900, 380, 300, 300, 0, -40, 40, 15, 30],
+  [-60, 420, 200, 200, 0, 50, 40, 20, 28],
+  [560, 720, 240, 36, 1, -50, -30, 0, 21],
+  [1300, 260, 110, 110, 1, -30, 50, -40, 25],
+  [400, 300, 60, 60, 0, 40, -40, 90, 19],
+];
+
+function MovingBackground() {
+  const still = useReducedMotion();
+  return (
+    <LazyMotion features={domAnimation} strict>
+    <svg aria-hidden="true" className="fixed inset-0 -z-10 w-full h-full pointer-events-none"
+      viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      {RECTS.map(([x, y, w, h, filled, dx, dy, turn, s], i) => (
+        <m.rect key={i} x={x} y={y} width={w} height={h} rx={Math.min(w, h) * (filled ? 0.5 : 0.18)}
+          fill={filled ? "var(--line)" : "none"} stroke={filled ? "none" : "var(--line)"} strokeWidth={2}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+          initial={{ opacity: 0 }}
+          animate={still
+            ? { opacity: filled ? 0.07 : 0.14 }
+            : { opacity: filled ? [0.05, 0.1, 0.05] : [0.1, 0.2, 0.1], x: [0, dx, 0], y: [0, dy, 0], rotate: [0, turn, 0] }}
+          transition={still ? { duration: 0.6 } : { duration: s, repeat: Infinity, ease: "easeInOut", delay: -i * 1.7 }} />
+      ))}
+    </svg>
+    </LazyMotion>
+  );
+}
 
 // The exact profile picture from the X account.
 function Logo({ size, ring }) {
@@ -22,7 +61,7 @@ function Btn({ href, kind, children }) {
 
 function Section({ id, title, sub, white, children }) {
   return (
-    <section id={id} className={"w-full py-14 px-5 lg:py-24 lg:px-30 " + (white ? "bg-[var(--surf)]" : "")}>
+    <section id={id} className={"w-full py-14 px-5 lg:py-24 lg:px-30 " + (white ? "bg-[var(--surf-a)]" : "")}>
       <div className="max-w-[1200px] mx-auto flex flex-col gap-7 lg:gap-9">
         <div data-reveal className="flex flex-col gap-2">
           <h2 className="text-[28px] lg:text-[36px] font-bold text-[var(--text)]">{title}</h2>
@@ -83,7 +122,8 @@ function Portfolio() {
   const ext = { target: "_blank", rel: "noopener" };
 
   return (
-    <div className="w-full flex flex-col bg-[var(--bg)]">
+    <div className="relative isolate w-full flex flex-col bg-[var(--bg)]">
+      <MovingBackground />
       {/* Nav */}
       <header className="sticky top-0 z-10 w-full py-4 px-5 bg-[var(--nav)] backdrop-blur border-b border-[var(--border)] lg:px-30">
         <div className="max-w-[1200px] mx-auto flex flex-row justify-between items-center gap-4">
