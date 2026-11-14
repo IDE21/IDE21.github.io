@@ -25,16 +25,16 @@ function MovingBackground() {
   const still = useReducedMotion();
   return (
     <LazyMotion features={domAnimation} strict>
-    <svg aria-hidden="true" className="fixed inset-0 -z-10 w-full h-full pointer-events-none"
+    <svg aria-hidden="true" className="fixed inset-0 -z-10 w-full h-full pointer-events-none" style={{ opacity: "var(--bg-motion)" }}
       viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
       {RECTS.map(([x, y, w, h, filled, dx, dy, turn, s], i) => (
         <m.rect key={i} x={x} y={y} width={w} height={h} rx={Math.min(w, h) * (filled ? 0.5 : 0.18)}
-          fill={filled ? "var(--line)" : "none"} stroke={filled ? "none" : "var(--line)"} strokeWidth={2}
+          fill={filled ? "var(--line)" : "none"} stroke={filled ? "none" : "var(--line)"} strokeWidth={2.5}
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
           initial={{ opacity: 0 }}
           animate={still
-            ? { opacity: filled ? 0.07 : 0.14 }
-            : { opacity: filled ? [0.05, 0.1, 0.05] : [0.1, 0.2, 0.1], x: [0, dx, 0], y: [0, dy, 0], rotate: [0, turn, 0] }}
+            ? { opacity: filled ? 0.14 : 0.28 }
+            : { opacity: filled ? [0.1, 0.24, 0.1] : [0.2, 0.5, 0.2], x: [0, dx * 1.8, 0], y: [0, dy * 1.8, 0], rotate: [0, turn * 1.5 || 8, 0] }}
           transition={still ? { duration: 0.6 } : { duration: s, repeat: Infinity, ease: "easeInOut", delay: -i * 1.7 }} />
       ))}
     </svg>
@@ -56,7 +56,7 @@ function Btn({ href, kind, children }) {
     ? "bg-[var(--btn)] text-white hover:bg-[var(--btn-h)]"
     : kind === "light" ? "bg-white text-[#0A2F5C] hover:bg-[#E6EEF7]"
     : "bg-[var(--surf)] text-[var(--navy)] border border-[var(--border)] hover:border-[var(--navy)]";
-  return <a href={href} className={"inline-flex items-center justify-center py-[13px] px-[26px] rounded-[12px] text-[15px] font-semibold transition " + k}>{children}</a>;
+  return <a href={href} className={"ix btn inline-flex items-center justify-center py-[13px] px-[26px] rounded-[12px] text-[15px] font-semibold " + (kind === "ghost" ? "" : "shine ") + k}>{children}</a>;
 }
 
 function Section({ id, title, sub, white, children }) {
@@ -127,22 +127,22 @@ function Portfolio() {
       {/* Nav */}
       <header className="sticky top-0 z-10 w-full py-4 px-5 bg-[var(--nav)] backdrop-blur border-b border-[var(--border)] lg:px-30">
         <div className="max-w-[1200px] mx-auto flex flex-row justify-between items-center gap-4">
-          <a href="#top" className="flex flex-row gap-[10px] items-center">
+          <a href="#top" className="ix logo-link flex flex-row gap-[10px] items-center rounded-full">
             <Logo size={40} ring />
             <span className="text-[18px] font-bold">{t.name}</span>
           </a>
           <nav className="hidden lg:flex flex-row gap-7 items-center text-[15px] font-medium text-[var(--muted)]">
-            {Object.entries(t.nav).map(([k, v]) => <a key={k} href={"#" + k} className="hover:text-[var(--navy)]">{v}</a>)}
+            {Object.entries(t.nav).map(([k, v]) => <a key={k} href={"#" + k} className="ulink hover:text-[var(--navy)] transition-colors">{v}</a>)}
           </nav>
           <div className="flex flex-row gap-[10px] items-center">
             <button onClick={toggleTheme} aria-label={dark ? t.lightMode : t.darkMode} title={dark ? t.lightMode : t.darkMode}
-              className="w-[44px] h-[40px] inline-flex items-center justify-center rounded-[10px] border border-[var(--border)] text-[var(--navy)] hover:border-[var(--navy)] cursor-pointer bg-[var(--surf)]">
+              className="ix icon-btn w-[44px] h-[40px] inline-flex items-center justify-center rounded-[10px] border border-[var(--border)] text-[var(--navy)] hover:border-[var(--navy)] hover:bg-[var(--soft)] cursor-pointer bg-[var(--surf)]">
               {dark
                 ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
                 : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>}
             </button>
             <button onClick={() => setLang(lang === "ar" ? "en" : "ar")} aria-label="Switch language"
-              className="min-w-[44px] h-[40px] px-[14px] rounded-[10px] border border-[var(--border)] text-[14px] font-bold text-[var(--navy)] hover:border-[var(--navy)] cursor-pointer bg-[var(--surf)]">
+              className="ix btn min-w-[44px] h-[40px] px-[14px] rounded-[10px] border border-[var(--border)] text-[14px] font-bold text-[var(--navy)] hover:border-[var(--navy)] hover:bg-[var(--soft)] cursor-pointer bg-[var(--surf)]">
               {t.other}
             </button>
             <span className="hidden lg:inline-flex"><Btn href="#contact" kind="primary">{t.ctaContact}</Btn></span>
@@ -265,8 +265,8 @@ function Portfolio() {
             const on = c === cat;
             return (
               <button key={c} onClick={() => setCat(c)}
-                className={"py-[7px] px-[14px] rounded-full text-[13px] font-medium cursor-pointer transition " +
-                  (on ? "bg-[var(--btn)] text-white" : "bg-[var(--surf)] border border-[var(--border)] text-[var(--muted)] hover:border-[var(--navy)]")}>
+                aria-pressed={on} className={"ix btn py-[7px] px-[14px] rounded-full text-[13px] font-medium cursor-pointer " +
+                  (on ? "bg-[var(--btn)] text-white" : "bg-[var(--surf)] border border-[var(--border)] text-[var(--muted)] hover:border-[var(--navy)] hover:text-[var(--navy)]")}>
                 {label}
               </button>
             );
@@ -276,7 +276,7 @@ function Portfolio() {
           {shown.map((p, i) => {
             const [title, text] = p[lang];
             return (
-              <article key={p.repo} data-reveal style={{ "--d": (i % 3) * 80 + "ms" }} className="flex flex-col gap-3 p-6 rounded-[18px] bg-[var(--surf)] border border-[var(--border)] hover:border-[var(--line)] hover:shadow-[0_8px_24px_var(--shadow)] transition">
+              <article key={p.repo} data-reveal style={{ "--d": (i % 3) * 80 + "ms" }} className="card flex flex-col gap-3 p-6 rounded-[18px] bg-[var(--surf)] border border-[var(--border)]">
                 <div className="flex flex-row justify-between items-center gap-3">
                   <span className="py-1 px-[10px] rounded-full bg-[var(--soft)] text-[12px] font-semibold text-[var(--navy)]">{S.categories[p.cat][lang]}</span>
                   <span className="text-[12px] font-medium text-[var(--muted)]" dir="ltr">{p.lang}</span>
@@ -284,8 +284,8 @@ function Portfolio() {
                 <h3 className="text-[19px] font-bold leading-[1.4]">{title}</h3>
                 <p className="text-[14px] leading-[1.75] text-[var(--muted)] grow">{text}</p>
                 <div className="flex flex-row gap-4 text-[14px] font-semibold text-[var(--line)]">
-                  <a href={"https://github.com/IDE21/" + p.repo} {...ext} className="hover:underline">{t.code} ↗</a>
-                  {p.demo && <a href={p.demo} {...ext} className="hover:underline">{t.demo} ↗</a>}
+                  <a href={"https://github.com/IDE21/" + p.repo} {...ext} className="ix ulink arrow-link">{t.code} <span className="arrow">↗</span></a>
+                  {p.demo && <a href={p.demo} {...ext} className="ix ulink arrow-link">{t.demo} <span className="arrow">↗</span></a>}
                 </div>
               </article>
             );
@@ -300,11 +300,11 @@ function Portfolio() {
           <p className="text-[16px] lg:text-[18px] text-[#C9D6E8] max-w-[560px]">{t.contactText}</p>
           <Btn href={"mailto:" + L.email} kind="light"><span dir="ltr">{L.email}</span></Btn>
           <div className="flex flex-row flex-wrap justify-center gap-5 text-[14px] font-semibold text-[#C9D6E8]" dir="ltr">
-            <a href={L.x} {...ext} className="hover:text-white">X</a>
-            <a href={L.github} {...ext} className="hover:text-white">GitHub</a>
-            <a href={L.linkedin} {...ext} className="hover:text-white">LinkedIn</a>
-            <a href={L.medium} {...ext} className="hover:text-white">Medium</a>
-            <a href={L.linktree} {...ext} className="hover:text-white">Linktree</a>
+            <a href={L.x} {...ext} className="ix ulink hover:text-white transition-colors">X</a>
+            <a href={L.github} {...ext} className="ix ulink hover:text-white transition-colors">GitHub</a>
+            <a href={L.linkedin} {...ext} className="ix ulink hover:text-white transition-colors">LinkedIn</a>
+            <a href={L.medium} {...ext} className="ix ulink hover:text-white transition-colors">Medium</a>
+            <a href={L.linktree} {...ext} className="ix ulink hover:text-white transition-colors">Linktree</a>
           </div>
         </div>
       </section>

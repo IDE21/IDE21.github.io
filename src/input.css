@@ -5,12 +5,12 @@
   :root {
     color-scheme: light;
     --bg:#F3F5F8; --surf:#FFFFFF; --surf-a:rgba(255,255,255,.6); --nav:rgba(255,255,255,.9); --border:#DCE3EC; --text:#0B1F3A; --muted:#5A6B82;
-    --navy:#0A2F5C; --soft:#E6EEF7; --line:#2F6FB0; --btn:#0A2F5C; --btn-h:#0B1F3A; --shadow:rgba(10,47,92,.08);
+    --navy:#0A2F5C; --soft:#E6EEF7; --line:#2F6FB0; --btn:#0A2F5C; --btn-h:#0B1F3A; --shadow:rgba(10,47,92,.08); --glow:rgba(10,47,92,.28); --bg-motion:.5;
   }
   :root.dark {
     color-scheme: dark;
     --bg:#0A111E; --surf:#111B2C; --surf-a:rgba(17,27,44,.55); --nav:rgba(17,27,44,.88); --border:#22324D; --text:#E8EEF7; --muted:#9BABC2;
-    --navy:#8DB8F2; --soft:#18294A; --line:#7FB2F0; --btn:#1F5BA8; --btn-h:#2A6CC4; --shadow:rgba(0,0,0,.35);
+    --navy:#8DB8F2; --soft:#18294A; --line:#7FB2F0; --btn:#1F5BA8; --btn-h:#2A6CC4; --shadow:rgba(0,0,0,.35); --glow:rgba(127,178,240,.35); --bg-motion:1;
   }
   @layer base {
     html { scroll-behavior: smooth; background: var(--bg); transition: background-color .2s; }
@@ -25,8 +25,40 @@
     transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);
     transition-delay: var(--d, 0ms);
   }
+  /* Project cards: keep the reveal and add a hover lift (translate is separate from transform). */
+  .card { transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1), translate .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s, border-color .3s; }
+  html.reveal-on .card[data-reveal] {
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1), translate .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s, border-color .3s;
+    transition-delay: var(--d, 0ms), var(--d, 0ms), 0s, 0s, 0s; }
+  .card:hover { translate: 0 -6px; border-color: var(--line); box-shadow: 0 18px 40px -16px var(--glow); }
   html.reveal-on [data-reveal][data-state="above"] { transform: translateY(-28px); }
   html.reveal-on [data-reveal][data-state="in"] { opacity: 1; transform: none; }
+  /* Clickable elements: lift on hover, press on click, clear focus ring for keyboard users. */
+  .ix { -webkit-tap-highlight-color: transparent; }
+  .ix:focus-visible { outline: 2px solid var(--line); outline-offset: 3px; }
+  .btn { position: relative; overflow: hidden; isolation: isolate;
+    transition: translate .25s cubic-bezier(.2,.7,.2,1), scale .15s ease, box-shadow .3s, background-color .2s, border-color .2s, color .2s; }
+  .btn:hover { translate: 0 -2px; box-shadow: 0 12px 26px -10px var(--glow); }
+  .btn:active { translate: 0 0; scale: .96; box-shadow: 0 4px 10px -6px var(--glow); transition-duration: .08s; }
+  .shine::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%);
+    translate: -120% 0; transition: translate .7s cubic-bezier(.2,.7,.2,1); }
+  .shine:hover::after { translate: 120% 0; }
+  .icon-btn { transition: translate .25s cubic-bezier(.2,.7,.2,1), scale .15s, box-shadow .3s, background-color .2s, border-color .2s; }
+  .icon-btn:hover { translate: 0 -2px; box-shadow: 0 10px 22px -10px var(--glow); }
+  .icon-btn:active { translate: 0 0; scale: .92; transition-duration: .08s; }
+  .icon-btn svg { transition: rotate .5s cubic-bezier(.2,.7,.2,1); }
+  .icon-btn:hover svg { rotate: 45deg; }
+  .logo-link img { transition: scale .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s; }
+  .logo-link:hover img { scale: 1.08; box-shadow: 0 6px 16px -6px var(--glow); }
+  /* Links: an underline that grows from the reading start. */
+  .ulink { background: linear-gradient(currentColor, currentColor) no-repeat left bottom / 0 1.5px; padding-bottom: 2px;
+    transition: background-size .3s cubic-bezier(.2,.7,.2,1), color .2s; }
+  [dir="rtl"] .ulink { background-position: right bottom; }
+  .ulink:hover { background-size: 100% 1.5px; }
+  .arrow { display: inline-block; transition: translate .25s cubic-bezier(.2,.7,.2,1); }
+  .arrow-link:hover .arrow { translate: 3px -3px; }
   @media (prefers-reduced-motion: reduce) {
     html.reveal-on [data-reveal] { opacity: 1 !important; transform: none !important; transition: none; }
+    .btn, .icon-btn, .card, .arrow, .icon-btn svg, .logo-link img, .shine::after { transition: none !important; translate: none !important; scale: none !important; rotate: none !important; }
   }
