@@ -54,7 +54,7 @@ function Logo({ size, ring }) {
 function Btn({ href, kind, children }) {
   const k = kind === "primary"
     ? "bg-[var(--btn)] text-white hover:bg-[var(--btn-h)]"
-    : kind === "light" ? "bg-white text-[#0A2F5C] hover:bg-[#E6EEF7]"
+    : kind === "cta" ? "bg-[var(--cta-btn)] text-[var(--cta-btn-text)] hover:bg-[var(--cta-btn-h)]"
     : "bg-[var(--surf)] text-[var(--navy)] border border-[var(--border)] hover:border-[var(--navy)]";
   return <a href={href} className={"ix btn inline-flex items-center justify-center py-[13px] px-[26px] rounded-[12px] text-[15px] font-semibold " + (kind === "ghost" ? "" : "shine ") + k}>{children}</a>;
 }
@@ -122,7 +122,7 @@ function Portfolio() {
   const ext = { target: "_blank", rel: "noopener" };
 
   return (
-    <div className="relative isolate w-full flex flex-col bg-[var(--bg)]">
+    <div className="relative isolate w-full min-h-dvh flex flex-col bg-[var(--bg)]">
       <MovingBackground />
       {/* Nav */}
       <header className="sticky top-0 z-10 w-full py-4 px-5 bg-[var(--nav)] backdrop-blur border-b border-[var(--border)] lg:px-30">
@@ -186,6 +186,12 @@ function Portfolio() {
       {/* About */}
       <Section id="about" title={t.aboutTitle}>
         <p data-reveal className="text-[16px] lg:text-[18px] leading-[1.8] text-[var(--muted)] max-w-[900px]">{t.aboutText}</p>
+        <div data-reveal className="flex flex-col gap-3">
+          <h3 className="text-[16px] font-bold">{t.interestsTitle}</h3>
+          <div className="flex flex-row flex-wrap gap-2">
+            {t.interests.map(s => <span key={s} className="py-[8px] px-[16px] rounded-full bg-[var(--soft)] border border-[var(--border)] text-[14px] font-semibold text-[var(--navy)]">{s}</span>)}
+          </div>
+        </div>
         <div data-reveal className="flex flex-col gap-3">
           <h3 className="text-[16px] font-bold">{t.skillsTitle}</h3>
           <div className="flex flex-row flex-wrap gap-2">
@@ -295,21 +301,30 @@ function Portfolio() {
 
       {/* Contact */}
       <section id="contact" className="w-full px-5 pb-14 lg:px-30 lg:pb-24">
-        <div data-reveal className="max-w-[1200px] mx-auto flex flex-col gap-[18px] py-10 px-6 items-center text-center rounded-[28px] bg-[linear-gradient(180deg,_#0A2F5C_0%,_#0B1F3A_100%)] lg:p-16">
-          <h2 className="text-[30px] lg:text-[44px] font-bold text-white">{t.contactTitle}</h2>
-          <p className="text-[16px] lg:text-[18px] text-[#C9D6E8] max-w-[560px]">{t.contactText}</p>
-          <Btn href={"mailto:" + L.email} kind="light"><span dir="ltr">{L.email}</span></Btn>
-          <div className="flex flex-row flex-wrap justify-center gap-5 text-[14px] font-semibold text-[#C9D6E8]" dir="ltr">
-            <a href={L.x} {...ext} className="ix ulink hover:text-white transition-colors">X</a>
-            <a href={L.github} {...ext} className="ix ulink hover:text-white transition-colors">GitHub</a>
-            <a href={L.linkedin} {...ext} className="ix ulink hover:text-white transition-colors">LinkedIn</a>
-            <a href={L.medium} {...ext} className="ix ulink hover:text-white transition-colors">Medium</a>
-            <a href={L.linktree} {...ext} className="ix ulink hover:text-white transition-colors">Linktree</a>
+        <div data-reveal style={{ background: "var(--cta-bg)" }} className="max-w-[1200px] mx-auto flex flex-col gap-[18px] py-10 px-6 items-center text-center rounded-[28px] border border-[var(--cta-border)] shadow-[0_24px_60px_-30px_var(--glow)] lg:p-16">
+          <h2 className="text-[30px] lg:text-[44px] font-bold text-[var(--cta-title)]">{t.contactTitle}</h2>
+          <p className="text-[16px] lg:text-[18px] text-[var(--cta-text)] max-w-[560px]">{t.contactText}</p>
+          <Btn href={"mailto:" + L.email} kind="cta"><span dir="ltr">{L.email}</span></Btn>
+          <div className="flex flex-row flex-wrap justify-center gap-5 text-[14px] font-semibold text-[var(--cta-text)]" dir="ltr">
+            <a href={L.x} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">X</a>
+            <a href={L.github} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">GitHub</a>
+            <a href={L.linkedin} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">LinkedIn</a>
+            <a href={L.medium} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">Medium</a>
+            <a href={L.linktree} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">Linktree</a>
           </div>
         </div>
       </section>
 
-      <footer className="w-full py-6 px-5 bg-[var(--surf)] border-t border-[var(--border)] text-center text-[13px] text-[var(--muted)]">{t.footer}</footer>
+      <footer className="mt-auto w-full py-5 px-5 bg-[var(--surf)] border-t border-[var(--border)] lg:px-30">
+        <div className="max-w-[1200px] mx-auto flex flex-col-reverse gap-4 items-center justify-between sm:flex-row">
+          <p className="text-[13px] text-[var(--muted)]">{t.footer}</p>
+          <a href="#top" onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            className="ix btn inline-flex items-center gap-2 py-[9px] px-[16px] rounded-full border border-[var(--border)] bg-[var(--surf)] text-[13px] font-semibold text-[var(--navy)] hover:border-[var(--navy)] hover:bg-[var(--soft)]">
+            {t.backTop}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

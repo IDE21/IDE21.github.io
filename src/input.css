@@ -6,11 +6,13 @@
     color-scheme: light;
     --bg:#F3F5F8; --surf:#FFFFFF; --surf-a:rgba(255,255,255,.6); --nav:rgba(255,255,255,.9); --border:#DCE3EC; --text:#0B1F3A; --muted:#5A6B82;
     --navy:#0A2F5C; --soft:#E6EEF7; --line:#2F6FB0; --btn:#0A2F5C; --btn-h:#0B1F3A; --shadow:rgba(10,47,92,.08); --glow:rgba(10,47,92,.28); --bg-motion:.5;
+    --cta-bg:#FFFFFF; --cta-border:#DCE3EC; --cta-title:#0A2F5C; --cta-text:#5A6B82; --cta-btn:#0A2F5C; --cta-btn-text:#FFFFFF; --cta-btn-h:#0B1F3A;
   }
   :root.dark {
     color-scheme: dark;
     --bg:#0A111E; --surf:#111B2C; --surf-a:rgba(17,27,44,.55); --nav:rgba(17,27,44,.88); --border:#22324D; --text:#E8EEF7; --muted:#9BABC2;
     --navy:#8DB8F2; --soft:#18294A; --line:#7FB2F0; --btn:#1F5BA8; --btn-h:#2A6CC4; --shadow:rgba(0,0,0,.35); --glow:rgba(127,178,240,.35); --bg-motion:1;
+    --cta-bg:linear-gradient(180deg,#0A2F5C 0%,#0B1F3A 100%); --cta-border:#22324D; --cta-title:#FFFFFF; --cta-text:#C9D6E8; --cta-btn:#FFFFFF; --cta-btn-text:#0A2F5C; --cta-btn-h:#E6EEF7;
   }
   @layer base {
     html { scroll-behavior: smooth; background: var(--bg); transition: background-color .2s; }
