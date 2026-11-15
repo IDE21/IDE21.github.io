@@ -6,13 +6,14 @@ window.SITE = {
     x: "https://x.com/ID_E21",
     linkedin: "https://www.linkedin.com/in/enad-alrougi-5b0a45253/",
     telegram: "https://t.me/DataWithYazeed",
+    orcid: "https://orcid.org/0009-0008-2947-6623",
     medium: "https://phe21.medium.com/",
   },
   t: {
     ar: {
       dir: "rtl", other: "EN", darkMode: "الوضع الليلي", lightMode: "الوضع النهاري", name: "عناد الروقي", short: "عناد",
       nav: { about: "نبذة", achievements: "الإنجازات", experience: "الخبرات", projects: "المشاريع", contact: "تواصل" },
-      achievementsTitle: "الإنجازات", publicationsTitle: "الأوراق العلمية (IEEE)", readPaper: "اقرأ الورقة على IEEE",
+      achievementsTitle: "الإنجازات", publicationsTitle: "الأوراق العلمية (IEEE)", readPaper: "اقرأ الورقة على IEEE", orcidLabel: "كل أوراقي على ORCID",
       experienceTitle: "الخبرات", educationTitle: "التعليم", certsTitle: "الشهادات",
       badge: "Data Science · Research · AI",
       role: "عالم بيانات وباحث في الذكاء الاصطناعي",
@@ -33,7 +34,7 @@ window.SITE = {
     en: {
       dir: "ltr", other: "ع", darkMode: "Dark mode", lightMode: "Light mode", name: "Enad Alrougi", short: "Enad",
       nav: { about: "About", achievements: "Achievements", experience: "Experience", projects: "Projects", contact: "Contact" },
-      achievementsTitle: "Achievements", publicationsTitle: "Publications (IEEE)", readPaper: "Read on IEEE Xplore",
+      achievementsTitle: "Achievements", publicationsTitle: "Publications (IEEE)", readPaper: "Read on IEEE Xplore", orcidLabel: "All my papers on ORCID",
       experienceTitle: "Experience", educationTitle: "Education", certsTitle: "Certifications",
       badge: "Data Science · Research · AI",
       role: "AI Researcher & Data Scientist",

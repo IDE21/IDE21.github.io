@@ -215,7 +215,13 @@ function Portfolio() {
           })}
         </div>
         <div className="flex flex-col gap-3">
-          <h3 className="text-[16px] font-bold">{t.publicationsTitle}</h3>
+          <div className="flex flex-row flex-wrap gap-x-4 gap-y-2 items-center justify-between">
+            <h3 className="text-[16px] font-bold">{t.publicationsTitle}</h3>
+            <a href={L.orcid} {...ext} className="ix btn arrow-link inline-flex items-center gap-2 py-[7px] px-[14px] rounded-full border border-[var(--border)] bg-[var(--surf)] text-[13px] font-semibold text-[var(--navy)] hover:border-[#A6CE39] hover:bg-[var(--soft)]">
+              <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#A6CE39" /><path fill="#fff" d="M10.6 23.3H8.7V10.1h1.9v13.2zm3-13.2h5.1c4.9 0 7 3.5 7 6.6 0 3.4-2.6 6.6-7 6.6h-5.1V10.1zm1.9 11.5h3c4.3 0 5.2-3.2 5.2-4.9 0-2.7-1.7-4.9-5.3-4.9h-2.9v9.8zM11 7.5c0 .7-.6 1.3-1.3 1.3s-1.3-.6-1.3-1.3.6-1.3 1.3-1.3S11 6.8 11 7.5z" /></svg>
+              {t.orcidLabel} <span className="arrow">↗</span>
+            </a>
+          </div>
           {S.publications.map((p, i) => (
             <a key={i} href={p.url} {...ext} data-reveal style={{ "--d": i * 80 + "ms" }} title={t.readPaper}
               className="card ix arrow-link group flex flex-row gap-3 items-start p-5 rounded-[14px] bg-[var(--surf)] border border-[var(--border)]">
@@ -318,6 +324,7 @@ function Portfolio() {
             <a href={L.linkedin} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">LinkedIn</a>
             <a href={L.medium} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">Medium</a>
             <a href={L.telegram} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">Telegram</a>
+            <a href={L.orcid} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">ORCID</a>
           </div>
         </div>
       </section>
