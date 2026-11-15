@@ -5,14 +5,14 @@ window.SITE = {
     github: "https://github.com/IDE21",
     x: "https://x.com/ID_E21",
     linkedin: "https://www.linkedin.com/in/enad-alrougi-5b0a45253/",
-    linktree: "https://linktr.ee/ID_E21",
+    telegram: "https://t.me/DataWithYazeed",
     medium: "https://phe21.medium.com/",
   },
   t: {
     ar: {
       dir: "rtl", other: "EN", darkMode: "الوضع الليلي", lightMode: "الوضع النهاري", name: "عناد الروقي", short: "عناد",
       nav: { about: "نبذة", achievements: "الإنجازات", experience: "الخبرات", projects: "المشاريع", contact: "تواصل" },
-      achievementsTitle: "الإنجازات", publicationsTitle: "الأوراق العلمية (IEEE)",
+      achievementsTitle: "الإنجازات", publicationsTitle: "الأوراق العلمية (IEEE)", readPaper: "اقرأ الورقة على IEEE",
       experienceTitle: "الخبرات", educationTitle: "التعليم", certsTitle: "الشهادات",
       badge: "Data Science · Research · AI",
       role: "عالم بيانات وباحث في الذكاء الاصطناعي",
@@ -33,7 +33,7 @@ window.SITE = {
     en: {
       dir: "ltr", other: "ع", darkMode: "Dark mode", lightMode: "Light mode", name: "Enad Alrougi", short: "Enad",
       nav: { about: "About", achievements: "Achievements", experience: "Experience", projects: "Projects", contact: "Contact" },
-      achievementsTitle: "Achievements", publicationsTitle: "Publications (IEEE)",
+      achievementsTitle: "Achievements", publicationsTitle: "Publications (IEEE)", readPaper: "Read on IEEE Xplore",
       experienceTitle: "Experience", educationTitle: "Education", certsTitle: "Certifications",
       badge: "Data Science · Research · AI",
       role: "AI Researcher & Data Scientist",
@@ -64,8 +64,10 @@ window.SITE = {
       en: ["Recommendations", "5 recommendation letters", "Including an academic recommendation and a job recommendation."] },
   ],
   publications: [
-    "Diagnosis of Alzheimer's Disease in Early Stages Using Deep Learning: An XAI and Ground Truth Analysis Approach",
-    "Leveraging Early Diagnosis of Alzheimer's Disease Using Deep Learning and XAI",
+    { title: "Diagnosis of Alzheimer's Disease in Early Stages Using Deep Learning: An XAI and Ground Truth Analysis Approach",
+      venue: "ICAIII 2026", url: "https://ieeexplore.ieee.org/document/11521152/" },
+    { title: "Leveraging Early Diagnosis of Alzheimer's Disease Using Deep Learning and XAI",
+      venue: "FICAC 2025", url: "https://ieeexplore.ieee.org/document/11341770/" },
   ],
   experience: [
     { org: "Amazon Web Services (AWS)", date: "11/2024 – 12/2024",

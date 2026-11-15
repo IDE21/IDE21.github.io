@@ -217,10 +217,17 @@ function Portfolio() {
         <div className="flex flex-col gap-3">
           <h3 className="text-[16px] font-bold">{t.publicationsTitle}</h3>
           {S.publications.map((p, i) => (
-            <div key={i} data-reveal style={{ "--d": i * 80 + "ms" }} className="flex flex-row gap-3 items-start p-5 rounded-[14px] border border-[var(--border)]" dir="ltr">
-              <span className="shrink-0 py-1 px-2 rounded-[6px] bg-[var(--btn)] text-white text-[11px] font-bold">IEEE</span>
-              <p className="text-[15px] font-semibold leading-[1.6] text-[var(--text)]" style={{ fontFamily: "Inter, sans-serif" }}>{p}</p>
-            </div>
+            <a key={i} href={p.url} {...ext} data-reveal style={{ "--d": i * 80 + "ms" }} title={t.readPaper}
+              className="card ix arrow-link group flex flex-row gap-3 items-start p-5 rounded-[14px] bg-[var(--surf)] border border-[var(--border)]">
+              <span className="shrink-0 py-1 px-2 rounded-[6px] bg-[var(--btn)] text-white text-[11px] font-bold" dir="ltr">IEEE</span>
+              <span className="flex-1 flex flex-col gap-2">
+                <span className="text-[15px] font-semibold leading-[1.6] text-[var(--text)] group-hover:text-[var(--navy)] transition-colors" dir="ltr" style={{ fontFamily: "Inter, sans-serif" }}>{p.title}</span>
+                <span className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center text-[13px] text-[var(--muted)]">
+                  <span dir="ltr">{p.venue}</span>
+                  <span className="font-semibold text-[var(--line)]">{t.readPaper} <span className="arrow">↗</span></span>
+                </span>
+              </span>
+            </a>
           ))}
         </div>
       </Section>
@@ -310,7 +317,7 @@ function Portfolio() {
             <a href={L.github} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">GitHub</a>
             <a href={L.linkedin} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">LinkedIn</a>
             <a href={L.medium} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">Medium</a>
-            <a href={L.linktree} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">Linktree</a>
+            <a href={L.telegram} {...ext} className="ix ulink hover:text-[var(--cta-title)] transition-colors">Telegram</a>
           </div>
         </div>
       </section>
