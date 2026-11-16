@@ -76,6 +76,7 @@ const template = lang => {
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#0A2F5C">
+<meta name="google-site-verification" content="rmDjnLMRA2TQO0dN42GVfMxS3eyuuiP-ER7Mzuzy24k">
 <meta property="og:type" content="profile">
 <meta property="og:title" content="${esc(t.pageTitle)}">
 <meta property="og:description" content="${esc(t.metaDescription)}">
