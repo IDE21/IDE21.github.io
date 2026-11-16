@@ -257,7 +257,7 @@ function Portfolio() {
       </section>
 
       {/* Everything else slides over the hero as a rounded sheet. */}
-      <main className="sheet relative z-10 -mt-8 rounded-t-[32px] lg:rounded-t-[48px] bg-[var(--bg)] shadow-[0_-30px_60px_-20px_rgba(0,0,0,.45)]">
+      <main className="sheet relative z-10 rounded-t-[32px] lg:rounded-t-[48px]">
         {/* About */}
         <Section id="about">
           <Heading title={t.aboutTitle} />
