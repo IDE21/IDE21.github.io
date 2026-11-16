@@ -1,7 +1,10 @@
 // All site text in both languages. Edit here; the page reads from this file.
 window.SITE = {
   links: {
-    email: "enadrouq@outlook.com",
+    // Written in two parts so simple address harvesters do not pick it up.
+    email: ["enadrouq", "outlook.com"].join("@"),
+    // Visitor counter (optional): put your GoatCounter code here, e.g. "enad" for enad.goatcounter.com. Empty = off.
+    goatcounter: "ide21",
     github: "https://github.com/IDE21",
     x: "https://x.com/ID_E21",
     linkedin: "https://www.linkedin.com/in/enad-alrougi-5b0a45253/",
@@ -29,7 +32,7 @@ window.SITE = {
       projectsTitle: "مشاريعي على GitHub", projectsText: "كل مشاريعي العامة، مرتّبة حسب المجال.",
       all: "الكل", code: "الكود", demo: "جرّب التطبيق",
       contactTitle: "خلّنا نتكلم", contactText: "عندك سؤال عن المجال، أو فكرة مشروع، أو تعاون بحثي؟ راسلني.",
-      footer: "© 2026 عناد الروقي. جميع الحقوق محفوظة.", backTop: "للأعلى", prev: "السابق", next: "التالي", scrollHint: "مرّر للأسفل", dragHint: "اسحب أو استخدم الأسهم", footerTag: "عالم بيانات وباحث في الذكاء الاصطناعي. أحوّل البيانات إلى قرارات.",
+      footer: "© 2026 عناد الروقي. جميع الحقوق محفوظة.", backTop: "للأعلى", featured: "مميّز", pageTitle: "عناد الروقي | عالم بيانات وباحث في الذكاء الاصطناعي", metaDescription: "عناد الروقي: عالم بيانات وباحث في الذكاء الاصطناعي. ورقتان علميتان في IEEE عن الكشف المبكر عن الزهايمر بالذكاء الاصطناعي القابل للتفسير، وتطبيق كشف بدقة 99.14٪، و16 مشروعاً مفتوح المصدر.", cvRequest: "اطلب السيرة الذاتية", cvNote: "اكتب اسمك وجهتك في الرسالة، وأرسلها لك.", cvSubject: "طلب السيرة الذاتية", cvBody: "السلام عليكم عناد،\n\nأرغب في الحصول على سيرتك الذاتية.\n\nالاسم:\nالجهة:\nسبب الطلب:\n\nشكراً لك.", copyEmail: "انسخ الإيميل", copied: "تم النسخ ✓", prev: "السابق", next: "التالي", scrollHint: "مرّر للأسفل", dragHint: "اسحب أو استخدم الأسهم", footerTag: "عالم بيانات وباحث في الذكاء الاصطناعي. أحوّل البيانات إلى قرارات.",
     },
     en: {
       dir: "ltr", other: "ع", darkMode: "Dark mode", lightMode: "Light mode", name: "Enad Alrougi", short: "Enad",
@@ -50,15 +53,15 @@ window.SITE = {
       projectsTitle: "My GitHub projects", projectsText: "All my public work, grouped by field.",
       all: "All", code: "Code", demo: "Live demo",
       contactTitle: "Let's talk", contactText: "A question about the field, a project idea or a research collaboration? Send me a message.",
-      footer: "© 2026 Enad Alrougi. All rights reserved.", backTop: "Back to top", prev: "Previous", next: "Next", scrollHint: "Scroll down", dragHint: "Drag or use the arrows", footerTag: "AI researcher and data scientist. Turning data into decisions.",
+      footer: "© 2026 Enad Alrougi. All rights reserved.", backTop: "Back to top", featured: "Featured", pageTitle: "Enad Alrougi | AI Researcher & Data Scientist", metaDescription: "Enad Alrougi: AI researcher and data scientist. Two IEEE papers on early Alzheimer's detection with explainable AI, a detection app at 99.14% accuracy, and 16 open-source projects.", cvRequest: "Request my CV", cvNote: "Add your name and organisation, and I will send it to you.", cvSubject: "CV request", cvBody: "Hello Enad,\n\nI would like to receive your CV.\n\nName:\nOrganisation:\nReason for the request:\n\nThank you.", copyEmail: "Copy email", copied: "Copied ✓", prev: "Previous", next: "Next", scrollHint: "Scroll down", dragHint: "Drag or use the arrows", footerTag: "AI researcher and data scientist. Turning data into decisions.",
     },
   },
   // From the LinkedIn profile (Profile.pdf).
   achievements: [
     { ar: ["النشر العلمي", "ورقتان علميتان محكّمتان في IEEE", "عن الكشف المبكر عن الزهايمر بالتعلّم العميق والذكاء الاصطناعي القابل للتفسير، وتحقّق من نتائجها أطباء أعصاب مختصّون."],
       en: ["Publications", "Two peer-reviewed IEEE papers", "On early Alzheimer's detection with deep learning and explainable AI, with results validated by specialist neurologists."] },
-    { ar: ["تطبيق عملي", "دقة 99.14٪ في تطبيق كشف الزهايمر", "تطبيق يعتمد على نموذج CNN مدرّب على بيانات ADNI لتصنيف أربع مراحل، تفوّق على ResNet و Random Forest و SVM و KNN، وتحقّق منه أطباء أعصاب مختصّون. التطبيق مشروع عملي وليس نتيجة بحث منشور."],
-      en: ["Applied project", "99.14% accuracy in an Alzheimer's detection app", "An app built on a CNN trained on ADNI to classify four stages, outperforming ResNet, Random Forest, SVM and KNN, and validated by specialist neurologists. This is a practical project, not a published research result."] },
+    { ar: ["تطبيق عملي", "دقة 99.14٪ في تطبيق كشف الزهايمر", "تطبيق يعتمد على نموذج CNN مدرّب على بيانات ADNI لتصنيف أربع مراحل، تفوّق على ResNet و Random Forest و SVM و KNN، وتحقّق منه أطباء أعصاب مختصّون. التطبيق مشروع عملي وليس نتيجة بحث منشور، وهو أداة بحثية وليس أداة تشخيص طبي."],
+      en: ["Applied project", "99.14% accuracy in an Alzheimer's detection app", "An app built on a CNN trained on ADNI to classify four stages, outperforming ResNet, Random Forest, SVM and KNN, and validated by specialist neurologists. This is a practical project, not a published research result, and a research tool, not a medical diagnostic tool."] },
     { ar: ["التعليم", "ماجستير علم البيانات بمعدل 3.75 من 4", "من جامعة الطائف، بعد بكالوريوس في الذكاء الاصطناعي من جامعة جدة."],
       en: ["Education", "MSc Data Science, GPA 3.75/4", "From Taif University, after a BSc in Artificial Intelligence from the University of Jeddah."] },
     { ar: ["التوصيات", "5 خطابات توصية", "منها خطاب توصية أكاديمي وخطاب توصية للعمل."],
@@ -101,8 +104,8 @@ window.SITE = {
   projects: [
     { repo: "Alzheimers-app", cat: "health", lang: "Python", featured: true,
       demo: "https://alzheimers-app-vopgtrhcfvujkamwck95u4.streamlit.app/",
-      ar: ["تطبيق الكشف المبكر عن الزهايمر", "تطبيق Streamlit ترفع فيه صورة رنين مغناطيسي للدماغ، ويصنّفها فوراً إلى واحدة من أربع مراحل للزهايمر باستخدام نموذج ResNet18 مبني بـ PyTorch."],
-      en: ["Early Alzheimer's detection app", "A Streamlit app: upload a brain MRI slice and get an instant prediction of one of four Alzheimer's stages from a PyTorch ResNet18 model."] },
+      ar: ["تطبيق الكشف المبكر عن الزهايمر", "تطبيق Streamlit ترفع فيه صورة رنين مغناطيسي للدماغ، ويصنّفها فوراً إلى واحدة من أربع مراحل للزهايمر باستخدام نموذج ResNet18 مبني بـ PyTorch. أداة بحثية وليست للتشخيص الطبي."],
+      en: ["Early Alzheimer's detection app", "A Streamlit app: upload a brain MRI slice and get an instant prediction of one of four Alzheimer's stages from a PyTorch ResNet18 model. A research tool, not for medical diagnosis."] },
     { repo: "Multiple-Sclerosis-MS-Early-Diagnosis", cat: "health", lang: "Jupyter", featured: true,
       ar: ["التشخيص المبكر للتصلّب المتعدد", "نموذج MobileNet بالتعلّم بالنقل يميّز التصلّب المتعدد عن 7 فئات أخرى (مراحل الزهايمر وأورام الدماغ والدماغ السليم) في صور الرنين من بيانات MCND، بدقة 96.6٪ على صور اختبار لم يرها النموذج."],
       en: ["Early diagnosis of multiple sclerosis", "A MobileNet transfer-learning model that tells MS apart from 7 other classes (Alzheimer's stages, brain tumours and healthy brains) in MRI from the MCND dataset, with 96.6% accuracy on held-out test images."] },

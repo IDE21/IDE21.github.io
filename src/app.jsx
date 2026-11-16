@@ -1,5 +1,4 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
 import { MetalShader } from "./metal.jsx";
 
 const S = window.SITE;
@@ -128,12 +127,18 @@ function Carousel({ items, t, render }) {
   );
 }
 
-function Portfolio() {
-  const [lang, setLang] = React.useState(() => {
-    try { return localStorage.getItem("lang") || "ar"; } catch { return "ar"; }
-  });
+// Language: the build passes it in; in the browser the address decides (/en/ or ?lang=en), then the visitor's last choice.
+function startLang() {
+  const q = new URLSearchParams(location.search).get("lang");
+  if (q === "ar" || q === "en") return q;
+  if (/^\/en(\/|$)/.test(location.pathname)) return "en";
+  return "ar";
+}
+
+export function Portfolio({ initialLang }) {
+  const [lang, setLang] = React.useState(() => initialLang || startLang());
   const [cat, setCat] = React.useState("all");
-  const [dark, setDark] = React.useState(() => document.documentElement.classList.contains("dark"));
+  const [dark, setDark] = React.useState(() => typeof document !== "undefined" && document.documentElement.classList.contains("dark"));
   const [overHero, setOverHero] = React.useState(true);
   React.useEffect(() => { document.documentElement.classList.toggle("dark", dark); }, [dark]);
   React.useEffect(() => {
@@ -152,14 +157,24 @@ function Portfolio() {
   // Scroll: the header switches style once the page rolls over the hero, and the hero text eases away.
   React.useEffect(() => {
     let raf = 0;
+    // Header bar: fades out gradually while scrolling down and back in while scrolling up (always shown near the top).
+    let lastY = window.scrollY, bar = 1;
+    const root = document.documentElement;
+    const fadeBar = () => {
+      const y = window.scrollY;
+      bar = y < 80 ? 1 : Math.min(1, Math.max(0, bar - (y - lastY) / 220));
+      lastY = y;
+      root.style.setProperty("--bar-a", bar.toFixed(3));
+      root.toggleAttribute("data-bar-off", bar < 0.15);
+    };
     const update = () => {
       raf = 0;
       const h = window.innerHeight, y = window.scrollY;
       setOverHero(y < h - 72);
-      document.documentElement.style.setProperty("--hero-p", Math.min(1, y / h).toFixed(3));
+      root.style.setProperty("--hero-p", Math.min(1, y / h).toFixed(3));
     };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    update();
+    const onScroll = () => { fadeBar(); if (!raf) raf = requestAnimationFrame(update); };
+    fadeBar(); update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
@@ -185,11 +200,16 @@ function Portfolio() {
   React.useEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir = t.dir;
-    try { localStorage.setItem("lang", lang); } catch {}
+    // Keep the address in step with the language so it can be shared: / for Arabic, /en/ for English.
+    const path = lang === "en" ? "/en/" : "/";
+    const q = new URLSearchParams(location.search); q.delete("lang");
+    const rest = (q.toString() ? "?" + q : "") + location.hash;
+    if (location.pathname !== path || location.search !== (q.toString() ? "?" + q : "")) history.replaceState(null, "", path + rest);
+    document.title = t.pageTitle;
   }, [lang]);
 
   const L = S.links;
-  const shown = S.projects.filter(p => cat === "all" || p.cat === cat);
+  const shown = S.projects.filter(p => cat === "all" || p.cat === cat).sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
   const cats = ["all", ...Object.keys(S.categories)];
   // Pill wall rows: interests highlighted, skills in between.
   const I = t.interests.map(x => [x, 1]), K = t.skills.map(x => [x, 0]);
@@ -200,22 +220,34 @@ function Portfolio() {
   ].map(r => r.filter(Boolean));
 
   const head = overHero
-    ? "bg-[rgba(5,10,22,.35)] border-white/10 text-white"
-    : "bg-[var(--nav)] border-[var(--border)] text-[var(--text)] shadow-[0_10px_30px_-20px_var(--glow)]";
+    ? "bg-[rgba(5,10,22,.35)] border-white/10"
+    : "bg-[var(--nav)] border-[var(--border)] shadow-[0_10px_30px_-20px_var(--glow)]";
   const iconBtn = "ix icon-btn w-[42px] h-[42px] inline-flex items-center justify-center rounded-full border cursor-pointer " +
     (overHero ? "border-white/25 text-white hover:bg-white/10 hover:border-white" : "border-[var(--border)] text-[var(--navy)] bg-[var(--surf)] hover:border-[var(--navy)]");
+  const cvHref = "mailto:" + L.email + "?subject=" + encodeURIComponent(t.cvSubject) + "&body=" + encodeURIComponent(t.cvBody);
+  const [copied, setCopied] = React.useState(false);
+  const copyEmail = async () => {
+    try { await navigator.clipboard.writeText(L.email); }
+    catch {
+      const ta = document.createElement("textarea"); ta.value = L.email; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch {} ta.remove();
+    }
+    setCopied(true); setTimeout(() => setCopied(false), 2000);
+  };
   const social = [["X", L.x], ["GitHub", L.github], ["LinkedIn", L.linkedin], ["Medium", L.medium], ["Telegram", L.telegram], ["ORCID", L.orcid]];
 
   return (
     <div className="relative w-full min-h-dvh flex flex-col bg-[var(--bg)]">
       {/* Floating blurred header */}
       <header className="fixed top-3 inset-x-3 z-30 lg:top-4 lg:inset-x-6">
-        <div className={"max-w-[1240px] mx-auto flex flex-row justify-between items-center gap-4 py-[9px] ps-[10px] pe-[10px] lg:ps-4 rounded-full border backdrop-blur-xl transition-[background-color,border-color,color,box-shadow] duration-300 " + head}>
-          <a href="#top" className="ix logo-link flex flex-row gap-[10px] items-center rounded-full">
+        <div className={"relative max-w-[1240px] mx-auto flex flex-row justify-between items-center gap-4 py-[9px] ps-[10px] pe-[10px] lg:ps-4 " + (overHero ? "text-white" : "text-[var(--text)]")}>
+          {/* The bar itself (background, border, blur): this is the part that fades away. */}
+          <div aria-hidden="true" className={"bar-bg absolute inset-0 -z-10 rounded-full border backdrop-blur-xl transition-[background-color,border-color,box-shadow] duration-300 " + head} />
+          <a href="#top" className={"ix logo-link keep-chip flex flex-row gap-[10px] items-center rounded-full " + (overHero ? "chip-dark" : "")}>
             <span className={"inline-flex transition-colors duration-300 " + (overHero ? "text-white" : "text-[var(--navy)]")}><Logo size={24} /></span>
             <span className="text-[16px] lg:text-[17px] font-bold">{t.name}</span>
           </a>
-          <nav className={"hidden lg:flex flex-row gap-7 items-center text-[15px] font-medium " + (overHero ? "text-white/80" : "text-[var(--muted)]")}>
+          <nav className={"bar-fade hidden lg:flex flex-row gap-7 items-center text-[15px] font-medium " + (overHero ? "text-white/80" : "text-[var(--muted)]")}>
             {Object.entries(t.nav).map(([k, v]) => <a key={k} href={"#" + k} className={"ulink transition-colors " + (overHero ? "hover:text-white" : "hover:text-[var(--navy)]")}>{v}</a>)}
           </nav>
           <div className="flex flex-row gap-2 items-center">
@@ -225,7 +257,7 @@ function Portfolio() {
                 : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>}
             </button>
             <button onClick={() => setLang(lang === "ar" ? "en" : "ar")} aria-label="Switch language" className={iconBtn + " text-[14px] font-bold"}>{t.other}</button>
-            <span className="hidden lg:inline-flex"><Pill href="#contact" kind={overHero ? "glass" : "solid"}>{t.ctaContact}</Pill></span>
+            <span className="bar-fade hidden lg:inline-flex"><Pill href="#contact" kind={overHero ? "glass" : "solid"}>{t.ctaContact}</Pill></span>
           </div>
         </div>
       </header>
@@ -243,6 +275,7 @@ function Portfolio() {
             <div className="flex flex-row flex-wrap gap-3 pt-1">
               <Pill href="#projects" kind="light">{t.ctaProjects}</Pill>
               <Pill href="#contact" kind="glass">{t.ctaContact}</Pill>
+              <Pill href={cvHref} kind="glass">{t.cvRequest}</Pill>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-3">
@@ -373,9 +406,13 @@ function Portfolio() {
             <Carousel items={shown} t={t} render={p => {
               const [title, text] = p[lang];
               return (
-                <article className="glass glass-card flex flex-col gap-3 p-6 lg:p-7 rounded-[26px] w-full">
+                <article className={"glass glass-card flex flex-col gap-3 p-6 lg:p-7 rounded-[26px] w-full " + (p.featured ? "is-featured" : "")}>
                   <div className="flex flex-row justify-between items-center gap-3">
-                    <span className="py-1 px-[10px] rounded-full bg-white/10 text-[12px] font-semibold text-[#C9D6E8]">{S.categories[p.cat][lang]}</span>
+                    <span className="flex flex-row flex-wrap gap-2">
+                      {p.featured ? <span className="inline-flex items-center gap-1 py-1 px-[10px] rounded-full bg-white text-[#0A2F5C] text-[12px] font-bold">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.5l7.1-.6z" /></svg>{t.featured}</span> : null}
+                      <span className="py-1 px-[10px] rounded-full bg-white/10 text-[12px] font-semibold text-[#C9D6E8]">{S.categories[p.cat][lang]}</span>
+                    </span>
                     <span className="text-[12px] font-medium text-[#9BB0CC]" dir="ltr">{p.lang}</span>
                   </div>
                   <h3 className="text-[20px] font-bold leading-[1.4]">{title}</h3>
@@ -405,6 +442,23 @@ function Portfolio() {
                 </span>
                 <span className="shrink-0 w-11 h-11 inline-flex items-center justify-center rounded-full bg-white text-[#0A2F5C]"><Arrow /></span>
               </a>
+              <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_auto]">
+                <a href={cvHref} className="ix btn arrow-link flex flex-row items-center gap-3 p-4 rounded-[20px] border border-[var(--border)] bg-[var(--soft)] text-[var(--navy)] hover:border-[var(--navy)]">
+                  <span className="shrink-0 w-10 h-10 inline-flex items-center justify-center rounded-full bg-[var(--btn)] text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M9 13h6M9 17h4" /></svg>
+                  </span>
+                  <span className="flex-1 flex flex-col gap-[2px]">
+                    <span className="text-[15px] font-bold">{t.cvRequest}</span>
+                    <span className="text-[12px] text-[var(--muted)]">{t.cvNote}</span>
+                  </span>
+                  <Arrow size={14} />
+                </a>
+                <button type="button" onClick={copyEmail} aria-live="polite"
+                  className="ix btn inline-flex items-center justify-center gap-2 py-[12px] px-[18px] rounded-[20px] border border-[var(--border)] text-[14px] font-semibold text-[var(--navy)] hover:border-[var(--navy)] hover:bg-[var(--soft)] cursor-pointer">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></svg>
+                  {copied ? t.copied : t.copyEmail}
+                </button>
+              </div>
               <div className="grid grid-cols-2 gap-3 xl:grid-cols-3" dir="ltr">
                 {social.map(([name, href]) => (
                   <a key={name} href={href} {...ext} className="ix btn arrow-link inline-flex items-center justify-between gap-2 py-[12px] px-[16px] rounded-full border border-[var(--border)] text-[14px] font-semibold text-[var(--navy)] hover:border-[var(--navy)] hover:bg-[var(--soft)]">
@@ -445,4 +499,3 @@ function Portfolio() {
   );
 }
 
-createRoot(document.getElementById("root")).render(<Portfolio />);

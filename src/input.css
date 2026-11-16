@@ -73,6 +73,15 @@
     box-shadow: 0 -30px 60px -20px rgba(0,0,0, calc(var(--sheet-a) * .45)); }
   .sheet > section:first-child { opacity: clamp(0, var(--hero-p, 0) * 5 - .45, 1); }
   .hero-inner { opacity: calc(1 - var(--hero-p, 0) * 2.2); translate: 0 calc(var(--hero-p, 0) * -60px); scale: calc(1 - var(--hero-p, 0) * .06); transform-origin: 50% 100%; }
+  /* Header: the bar and its links fade with --bar-a; the logo, name, theme and language buttons always stay. */
+  header { isolation: isolate; }
+  .bar-bg, .bar-fade { opacity: var(--bar-a, 1); transition: opacity .15s linear; }
+  html[data-bar-off] .bar-fade { pointer-events: none; }
+  /* When the bar is gone, the logo and name keep a small frosted chip so they stay readable over the page. */
+  .keep-chip { position: relative; padding: 6px 12px 6px 10px; margin: -6px -6px; }
+  .keep-chip::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--nav); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); opacity: calc(1 - var(--bar-a, 1)); transition: opacity .15s linear; }
+  .keep-chip.chip-dark::before { background: rgba(5,10,22,.45); border-color: rgba(255,255,255,.12); }
   .hero-shade { background: linear-gradient(to top, rgba(5,10,22,.85) 0%, rgba(5,10,22,.35) 45%, transparent 75%); }
   .metal-text { background: linear-gradient(100deg, #FFFFFF 0%, #C9D6E8 22%, #FFFFFF 38%, #8DB8F2 55%, #FFFFFF 72%, #AFC3DD 100%);
     background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -88,6 +97,8 @@
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: .45; transition: opacity .35s; }
   .glass-card:hover { translate: 0 -8px; border-color: rgba(255,255,255,.3); box-shadow: inset 1px 1px 0 rgba(255,255,255,.3), 0 30px 60px -30px rgba(47,111,176,.7); }
   .glass-card:hover::before { opacity: 1; }
+  .glass-card.is-featured { border-color: rgba(141,184,242,.45); box-shadow: inset 1px 1px 0 rgba(255,255,255,.25), 0 24px 60px -30px rgba(47,111,176,.8); }
+  .glass-card.is-featured::before { opacity: .8; }
   .carousel { scrollbar-width: none; cursor: grab; outline: none; }
   .carousel::-webkit-scrollbar { display: none; }
   .carousel.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
