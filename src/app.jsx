@@ -5,12 +5,12 @@ import { MetalShader } from "./metal.jsx";
 const S = window.SITE;
 const ext = { target: "_blank", rel: "noopener" };
 
-// The exact profile picture from the X account.
-function Logo({ size, ring }) {
+// The "E" mark from the X account picture, without its white background.
+// It is drawn as a mask, so it takes the colour of the text around it (white over the hero, navy or light blue elsewhere).
+function Logo({ size }) {
   return (
-    <img src="avatar.jpg" alt="Enad Alrougi" width={size} height={size}
-      className={"shrink-0 rounded-full bg-[var(--surf)] object-cover " + (ring ? "ring-1 ring-white/30" : "")}
-      style={{ width: size, height: size }} />
+    <span role="img" aria-label="Enad Alrougi" className="logo-mark shrink-0 inline-block bg-current"
+      style={{ width: Math.round(size * 214 / 186), height: size }} />
   );
 }
 
@@ -212,7 +212,7 @@ function Portfolio() {
       <header className="fixed top-3 inset-x-3 z-30 lg:top-4 lg:inset-x-6">
         <div className={"max-w-[1240px] mx-auto flex flex-row justify-between items-center gap-4 py-[9px] ps-[10px] pe-[10px] lg:ps-4 rounded-full border backdrop-blur-xl transition-[background-color,border-color,color,box-shadow] duration-300 " + head}>
           <a href="#top" className="ix logo-link flex flex-row gap-[10px] items-center rounded-full">
-            <Logo size={38} ring />
+            <span className={"inline-flex transition-colors duration-300 " + (overHero ? "text-white" : "text-[var(--navy)]")}><Logo size={24} /></span>
             <span className="text-[16px] lg:text-[17px] font-bold">{t.name}</span>
           </a>
           <nav className={"hidden lg:flex flex-row gap-7 items-center text-[15px] font-medium " + (overHero ? "text-white/80" : "text-[var(--muted)]")}>
@@ -420,7 +420,7 @@ function Portfolio() {
           <div className="max-w-[1200px] mx-auto flex flex-col gap-10">
             <div className="flex flex-col gap-6 lg:flex-row lg:justify-between lg:items-end">
               <div className="flex flex-row gap-4 items-center">
-                <Logo size={56} />
+                <span className="text-[var(--navy)]"><Logo size={40} /></span>
                 <div className="flex flex-col gap-1">
                   <span className="text-[22px] font-bold">{t.name}</span>
                   <span className="text-[14px] text-[var(--muted)] max-w-[360px]">{t.footerTag}</span>

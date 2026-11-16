@@ -54,6 +54,9 @@
   .icon-btn:active { translate: 0 0; scale: .92; transition-duration: .08s; }
   .icon-btn svg { transition: rotate .5s cubic-bezier(.2,.7,.2,1); }
   .icon-btn:hover svg { rotate: 45deg; }
+  .logo-mark { -webkit-mask: url(logo-e.png) center / contain no-repeat; mask: url(logo-e.png) center / contain no-repeat; }
+  .logo-link .logo-mark { transition: scale .3s cubic-bezier(.2,.7,.2,1); }
+  .logo-link:hover .logo-mark { scale: 1.08; }
   .logo-link img { transition: scale .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s; }
   .logo-link:hover img { scale: 1.08; box-shadow: 0 6px 16px -6px var(--glow); }
   /* Links: an underline that grows from the reading start. */
