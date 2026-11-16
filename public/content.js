@@ -29,7 +29,7 @@ window.SITE = {
       projectsTitle: "مشاريعي على GitHub", projectsText: "كل مشاريعي العامة، مرتّبة حسب المجال.",
       all: "الكل", code: "الكود", demo: "جرّب التطبيق",
       contactTitle: "خلّنا نتكلم", contactText: "عندك سؤال عن المجال، أو فكرة مشروع، أو تعاون بحثي؟ راسلني.",
-      footer: "© 2026 عناد الروقي. جميع الحقوق محفوظة.", backTop: "للأعلى",
+      footer: "© 2026 عناد الروقي. جميع الحقوق محفوظة.", backTop: "للأعلى", prev: "السابق", next: "التالي", scrollHint: "مرّر للأسفل", dragHint: "اسحب أو استخدم الأسهم", footerTag: "عالم بيانات وباحث في الذكاء الاصطناعي. أحوّل البيانات إلى قرارات.",
     },
     en: {
       dir: "ltr", other: "ع", darkMode: "Dark mode", lightMode: "Light mode", name: "Enad Alrougi", short: "Enad",
@@ -50,7 +50,7 @@ window.SITE = {
       projectsTitle: "My GitHub projects", projectsText: "All my public work, grouped by field.",
       all: "All", code: "Code", demo: "Live demo",
       contactTitle: "Let's talk", contactText: "A question about the field, a project idea or a research collaboration? Send me a message.",
-      footer: "© 2026 Enad Alrougi. All rights reserved.", backTop: "Back to top",
+      footer: "© 2026 Enad Alrougi. All rights reserved.", backTop: "Back to top", prev: "Previous", next: "Next", scrollHint: "Scroll down", dragHint: "Drag or use the arrows", footerTag: "AI researcher and data scientist. Turning data into decisions.",
     },
   },
   // From the LinkedIn profile (Profile.pdf).
